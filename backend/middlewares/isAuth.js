@@ -1,18 +1,20 @@
 import jwt from "jsonwebtoken";
 
 const isAuth = async (req, res, next) => {
+
     try {
 
-        const token = req.cookies.token;
+        const authHeader = req.headers.authorization;
 
-        console.log("TOKEN:", token);
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
 
-        if (!token) {
             return res.status(401).json({
                 success: false,
                 message: "Token not found"
             });
         }
+
+        const token = authHeader.split(" ")[1];
 
         const verifyToken = jwt.verify(
             token,
@@ -29,7 +31,7 @@ const isAuth = async (req, res, next) => {
 
         return res.status(401).json({
             success: false,
-            message: "Invalid or malformed token"
+            message: "Invalid token"
         });
     }
 };

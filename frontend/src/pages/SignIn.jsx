@@ -13,24 +13,42 @@ function SignIn() {
   const [loading,setLoading]=useState(false)
     const [password,setPassword]=useState("")
 const [err,setErr]=useState("")
-  const handleSignIn=async (e)=>{
-    e.preventDefault()
-    setErr("")
-    setLoading(true)
-try {
-  let result=await axios.post(`${serverUrl}/api/auth/signin`,{
-   email,password
-  },{withCredentials:true} )
- setUserData(result.data)
-  setLoading(false)
-   navigate("/")
-} catch (error) {
-  console.log(error)
-  setUserData(null)
-  setLoading(false)
-  setErr(error.response.data.message)
+const handleSignIn = async (e) => {
+
+  e.preventDefault()
+
+  setErr("")
+  setLoading(true)
+
+  try {
+
+    let result = await axios.post(
+      `${serverUrl}/api/auth/signin`,
+      {
+        email,
+        password
+      }
+    )
+
+    localStorage.setItem("token", result.data.token)
+
+    setUserData(result.data.user)
+
+    setLoading(false)
+
+    navigate("/")
+
+  } catch (error) {
+
+    console.log(error)
+
+    setUserData(null)
+
+    setLoading(false)
+
+    setErr(error.response.data.message)
+  }
 }
-    }
   return (
     <div className='w-full h-[100vh] bg-cover flex justify-center items-center' style={{backgroundImage:`url(${bg})`}} >
  <form className='w-[90%] h-[600px] max-w-[500px] bg-[#00000062] backdrop-blur shadow-lg shadow-black flex flex-col items-center justify-center gap-[20px] px-[20px]' onSubmit={handleSignIn}>

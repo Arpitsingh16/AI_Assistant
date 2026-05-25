@@ -9,26 +9,52 @@ function Customize2() {
     const [loading,setLoading]=useState(false)
     const navigate=useNavigate()
 
-    const handleUpdateAssistant=async ()=>{
-        setLoading(true)
-        try {
-            let formData=new FormData()
-            formData.append("assistantName",assistantName)
-            if(backendImage){
-                 formData.append("assistantImage",backendImage)
-            }else{
-                formData.append("imageUrl",selectedImage)
-            }
-            const result=await axios.post(`${serverUrl}/api/user/update`,formData,{withCredentials:true})
-setLoading(false)
-            console.log(result.data)
-            setUserData(result.data)
-            navigate("/")
-        } catch (error) {
-            setLoading(false)
-            console.log(error)
+const handleUpdateAssistant = async () => {
+
+    setLoading(true)
+
+    try {
+
+        const token = localStorage.getItem("token")
+
+        let formData = new FormData()
+
+        formData.append("assistantName", assistantName)
+
+        if (backendImage) {
+
+            formData.append("assistantImage", backendImage)
+
+        } else {
+
+            formData.append("imageUrl", selectedImage)
         }
+
+        const result = await axios.post(
+            `${serverUrl}/api/user/update`,
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
+
+        setLoading(false)
+
+        console.log(result.data)
+
+        setUserData(result.data)
+
+        navigate("/")
+
+    } catch (error) {
+
+        setLoading(false)
+
+        console.log(error)
     }
+}
 
   return (
     <div className='w-full h-[100vh] bg-gradient-to-t from-[black] to-[#030353] flex justify-center items-center flex-col p-[20px] relative '>
