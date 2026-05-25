@@ -18,7 +18,7 @@ connectDb()
 
 // MIDDLEWARES
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://ai-assistant-frontend-y9p1.onrender.com",
     credentials: true
 }))
 
