@@ -2,6 +2,8 @@ import genToken from "../config/token.js"
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 
+const isProduction = process.env.NODE_ENV === "production"
+
 export const signUp = async (req, res) => {
 
     try {
@@ -34,8 +36,8 @@ export const signUp = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000,
             path: "/"
         })
@@ -81,8 +83,8 @@ export const Login = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000,
             path: "/"
         })
@@ -105,8 +107,8 @@ export const logOut = async (req, res) => {
 
         res.clearCookie("token", {
             httpOnly: true,
-            secure: true,
-            sameSite: "none",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
             path: "/"
         })
 
