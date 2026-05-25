@@ -19,10 +19,13 @@ connectDb()
 // MIDDLEWARES
 app.use(cors({
     origin: "https://ai-assistant-frontend-y9p1.onrender.com",
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }))
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 // ROUTES
